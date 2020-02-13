@@ -1,16 +1,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hostping
+  name: hostping-service-backend
   labels:
-    run: hostping
+    app: hostping
+    layer: backend
 spec:
   ports:
   - port: 80
     protocol: TCP
     targetPort: 8080
   selector:
-    run: hostping
+    app: hostping
+    layer: backend
   type: NodePort
 
 
@@ -19,19 +21,24 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hostping
+  name: hostping-deployment-backend
+  labels:
+    app: hostping
+    layer: backend
 spec:
   selector:
     matchLabels:
-      run: hostping
+      app: hostping
+      layer: backend
   replicas: 2
   template:
     metadata:
       labels:
-        run: hostping
+        app: hostping
+        layer: backend
     spec:
       containers:
-      - name: hostping
+      - name: hostping-backend
         image: pulgupta/hostping
         ports:
         - containerPort: 8080
@@ -41,12 +48,12 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: hostping
+  name: hostping-ingress-backend
 spec:
   rules:
   - http:
       paths:
       - path: /ping
         backend:
-          serviceName: hostping
+          serviceName: hostping-service-backend
           servicePort: 80
