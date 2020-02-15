@@ -42,7 +42,16 @@ spec:
         image: pulgupta/hostping
         ports:
         - containerPort: 8080
+        volumeMounts:
+          - name: credentials
+            mountPath: "/etc/creds"
+            readOnly: true
+      volumes:
+        - name: credentials
+          secret:
+            secretName: hostping-cred
         
+
 ---
 
 apiVersion: extensions/v1beta1
