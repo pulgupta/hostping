@@ -1,0 +1,12 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hostping-ingress-backend
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /ping
+        backend:
+          serviceName: hostping-service-backend
+          servicePort: 80
