@@ -1,5 +1,4 @@
 .DS_Store
-.DS_Store/
 /target/
 **.jar
 !.mvn/wrapper/maven-wrapper.jar

@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostping-deployment-backend
+  labels:
+    app: hostping
+    layer: backend
+spec:
+  selector:
+    matchLabels:
+      app: hostping
+      layer: backend
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: hostping
+        layer: backend
+    spec:
+      containers:
+        - name: hostping-backend
+          image: pulgupta/hostping
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 250m
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: credentials
+              mountPath: "/etc/creds"
+              readOnly: true
+      volumes:
+        - name: credentials
+          secret:
+            secretName: hostping-cred
